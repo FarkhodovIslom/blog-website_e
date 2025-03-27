@@ -12,7 +12,7 @@ const customFormat = winston.format.combine(
 
 
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL || 'debug', // Changed default log level to 'debug'
   format: customFormat,
   transports: [
     
@@ -30,12 +30,20 @@ const logger = winston.createLogger({
       maxsize: 5242880, 
       maxFiles: 5
     }),
+    
+    // New transport for logging to a remote server
+    new winston.transports.Http({
+      host: 'remote-logging-server.com',
+      port: 80,
+      path: '/log',
+      level: 'info'
+    }),
 
     
     new winston.transports.File({
       filename: path.join(__dirname, '../logs/combined.log'),
       maxsize: 5242880, 
-      maxFiles: 5
+      maxFiles: 10 // Increased maxFiles to retain more logs
     })
   ]
 });
