@@ -6,16 +6,16 @@ const ownerMiddleware = async (req, res, next) => {
     const post = await Post.findById(postId);
 
     if (!post) {
-      return res.status(404).json({ message: 'Пост не найден' });
+      return res.status(404).json({ message: 'POst not found' });
     }
 
     if (post.author.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: 'Недостаточно прав' });
+      return res.status(403).json({ message: 'Access demied' });
     }
 
     next();
   } catch (error) {
-    res.status(500).json({ message: 'Ошибка сервера' });
+    res.status(500).json({ message: 'Servererror' });
   }
 };
 
